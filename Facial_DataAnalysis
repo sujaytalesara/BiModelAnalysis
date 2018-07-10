@@ -22,3 +22,78 @@ for i in range(0,Cases):
      Emergency = pd.read_csv(fileName1)
      NonEmergency = pd.read_csv(fileName2)
 #NonEmergency = pd.read_csv(NonEmergencyFileName, delimiter="\t")
+      # ------ Load to data Frame
+      Emergency = pd.read_csv(fileName1)
+      NonEmergency = pd.read_csv(fileName2)
+      # NonEmergency = pd.read_csv(NonEmergencyFileName, delimiter="\t")
+
+      Emergencydf = Emergency[
+           ['Joy Evidence', 'Anger Evidence', 'Surprise Evidence', 'Fear Evidence', 'Contempt Evidence',
+            'Disgust Evidence', 'Sadness Evidence']]
+      EmergencyAU = Emergency[
+           ['AU1 Evidence', 'AU2 Evidence', 'AU4 Evidence', 'AU5 Evidence', 'AU6 Evidence', 'AU7 Evidence',
+            'AU9 Evidence', 'AU10 Evidence', 'AU12 Evidence', 'AU14 Evidence', 'AU15 Evidence', 'AU17 Evidence',
+            'AU18 Evidence', 'AU20 Evidence', 'AU23 Evidence', 'AU24 Evidence', 'AU25 Evidence', 'AU26 Evidence',
+            'AU28 Evidence', 'AU43 Evidence']]
+      # emergencyCount = Emergencydf.iloc[:,0].count()
+
+      nonEmergencydf = NonEmergency[
+           ['Joy Evidence', 'Anger Evidence', 'Surprise Evidence', 'Fear Evidence', 'Contempt Evidence',
+            'Disgust Evidence', 'Sadness Evidence']]
+      NonEmerencyAU = NonEmergency[
+           ['AU1 Evidence', 'AU2 Evidence', 'AU4 Evidence', 'AU5 Evidence', 'AU6 Evidence', 'AU7 Evidence',
+            'AU9 Evidence', 'AU10 Evidence', 'AU12 Evidence', 'AU14 Evidence', 'AU15 Evidence', 'AU17 Evidence',
+            'AU18 Evidence', 'AU20 Evidence', 'AU23 Evidence', 'AU24 Evidence', 'AU25 Evidence', 'AU26 Evidence',
+            'AU28 Evidence', 'AU43 Evidence']]
+      # nonEmergencyCount = nonEmergencydf.iloc[:,0].count()
+
+      # Remove missing values
+      Emergencydf.dropna()
+      EmergencyAU.dropna()
+      nonEmergencydf.dropna()
+      NonEmerencyAU.dropna()
+
+      # print('Emergency count : ', emergencyCount )
+      # print('Non Emergency Count : ', nonEmergencyCount)
+
+      # thresholdLimit = input('Enter number of thresholds to set : ')
+      # ---- code for setting threshold dynamically
+      # ----------------Emergency ---------------------------------------------------
+      #  ------------------Physical Parameters Evaluation ----------------------
+      Accept = []
+      SignalNoiceRatio = []
+      Uncertanity = []
+
+      Reject = Emergencydf[Emergencydf < -0.0000001].count()
+      Equiprobable = Emergencydf[(Emergencydf >= -0.0000001) & (Emergencydf <= 0.0000001)].count()
+      Accept1 = Emergencydf[(Emergencydf > 0.0000001) & (Emergencydf < 1)].count()
+      Accept10 = Emergencydf[(Emergencydf > 1) & (Emergencydf < 2)].count()
+      Accept100 = Emergencydf[(Emergencydf > 2) & (Emergencydf < 3)].count()
+      Accept1000 = (Emergencydf[(Emergencydf > 3)].count())
+
+      SignalNoiceRatio.append(Reject / Emergencydf.count())
+      Uncertanity.append(Equiprobable / Emergencydf.count())
+      Accept.append((Accept1 + Accept10 + Accept100 + Accept1000) / Emergencydf.count())
+
+      # -----------Emergency Action Units Calculation --------------------------
+      AUSignalNoiceRatio = []
+      AUncertanity = []
+      AngerAU = []
+
+      AUReject = EmergencyAU[EmergencyAU < -0.0000001].count()
+      AUEquiprobable = EmergencyAU[(EmergencyAU >= -0.0000001) & (EmergencyAU <= 0.0000001)].count()
+      AUAccept1 = EmergencyAU[(EmergencyAU > 0.0000001) & (EmergencyAU < 1)].count()
+      AUAccept10 = EmergencyAU[(EmergencyAU > 1) & (EmergencyAU < 2)].count()
+      AUAccept100 = EmergencyAU[(EmergencyAU > 2) & (EmergencyAU < 3)].count()
+      AUAccept1000 = (EmergencyAU[(EmergencyAU > 3)].count())
+      AngerE = AUAccept1[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']] + AUAccept10[
+           ['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']] + AUAccept100[
+                    ['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']] + AUAccept1000[
+                    ['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']]
+
+      AUSignalNoiceRatio.append(AUReject / EmergencyAU.count())
+      AUncertanity.append(AUEquiprobable / EmergencyAU.count())
+      AngerAU.append((AngerE / EmergencyAU[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']].count()))
+
+
+
