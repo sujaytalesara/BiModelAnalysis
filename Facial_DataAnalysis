@@ -1,0 +1,6 @@
+# ---- Imported Packages
+import pandas as pd
+import scipy.stats as stats
+
+Cases = int(input('Enter the number of Cases you want to analyse : '))
+#fileName1 = [], fileName2 = [];
