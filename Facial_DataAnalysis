@@ -4,3 +4,21 @@ import scipy.stats as stats
 
 Cases = int(input('Enter the number of Cases you want to analyse : '))
 #fileName1 = [], fileName2 = [];
+for i in range(0,Cases):
+      # ---- Enter File name to be analysed
+     fileName1 = input("Enter the file path of Emergency Data : ")
+#E:\A TCD\X Thesis\Data\Sujay Emotient Analysis\LeoVaradkar_Ireland.csv
+#'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\HaleySouthCarolinaEmergency.csv'
+#'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Christie_EmergencyNJ.csv'
+     fileName2 = input("Enter the file path of non Emergency Data : ")
+     fileNameGender = input('Is he male or female ?')
+     df_dictionary  = {}
+     #df_dictionary = {i,fileNameGender}
+#E:\A TCD\X Thesis\Data\Sujay Emotient Analysis\Theresa May.csv
+#'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Haley_RepublicanNationalConvention.csv'
+#'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Christie_Non_Emergency.csv'
+
+#------ Load to data Frame
+     Emergency = pd.read_csv(fileName1)
+     NonEmergency = pd.read_csv(fileName2)
+#NonEmergency = pd.read_csv(NonEmergencyFileName, delimiter="\t")
