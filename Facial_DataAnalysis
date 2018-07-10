@@ -131,3 +131,14 @@ for i in range(0, Cases):
     AngernAU.append(
         (AngerNE / NonEmerencyAU[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']].count()))
 
+    # -- CHI Square Statistics -----------------------------------------------
+    chiStatisticsAccept = []
+    chiStatisticsEqui = []
+    chiStatisticsAnger = []
+    RatioE_NE = []
+    x
+    RatioE_NE.append((Accept[0] / nAccept[0]))
+    chiStatisticsAccept.append(stats.chisquare(Accept, nAccept))
+    chiStatisticsEqui.append(stats.chisquare(SignalNoiceRatio, nSignalNoiceRatio))
+    chiStatisticsAnger.append(stats.chisquare(AngerAU, AngernAU))
+
