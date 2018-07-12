@@ -1,43 +1,40 @@
 # ---- Imported Packages
 import pandas as pd
 import scipy.stats as stats
-import ggplot as plot
+import ggplot
 
-Cases = 1 #int(input('Enter the number of Cases you want to analyse : '))
-# fileName1 = [], fileName2 = [];
-
-for i in range(0, Cases):
+Cases = int(input('Enter the number of Cases you want to analyse : '))
+i = 0
+for i in range(1, Cases):
     # ---- Enter File name to be analysed
     fileName1 = input("Enter the file path of Emergency Data : ")
-    #  E:\A TCD\X Thesis\Data\Sujay Emotient Analysis\LeoVaradkar_Ireland.csv
-    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\HaleySouthCarolinaEmergency.csv'
-    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Christie_EmergencyNJ.csv'
     fileName2 = input("Enter the file path of non Emergency Data : ")
-    fileNameGender = input('Is he male or female -  ')
+    fileNameGender = input('Gender of sample is male or female -  ')
     df_dictionary = {}
-    # df_dictionary = {i,fileNameGender}
-    # E:\A TCD\X Thesis\Data\Sujay Emotient Analysis\Theresa May.csv
-    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Haley_RepublicanNationalConvention.csv'
-    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Christie_Non_Emergency.csv'
+    df_dictionary[i] = fileNameGender
 
     # ------ Load to data Frame
-    Emergency = pd.read_csv(fileName1)
-    NonEmergency = pd.read_csv(fileName2)
+    Emergency = pd.read_csv(fileName1, delimiter = '\t', header=4)
+    NonEmergency = pd.read_csv(fileName2, delimiter = '\t', header=4)
     # NonEmergency = pd.read_csv(NonEmergencyFileName, delimiter="\t")
 
-    Emergencydf = Emergency[['Joy Evidence', 'Anger Evidence', 'Surprise Evidence', 'Fear Evidence', 'Contempt Evidence',
-                             'Disgust Evidence', 'Sadness Evidence']]
-    EmergencyAU = Emergency[['AU1 Evidence', 'AU2 Evidence', 'AU4 Evidence', 'AU5 Evidence', 'AU6 Evidence', 'AU7 Evidence',
-                             'AU9 Evidence','AU10 Evidence', 'AU12 Evidence', 'AU14 Evidence', 'AU15 Evidence', 'AU17 Evidence',
-                             'AU18 Evidence','AU20 Evidence', 'AU23 Evidence', 'AU24 Evidence', 'AU25 Evidence', 'AU26 Evidence',
-                             'AU28 Evidence','AU43 Evidence']]
+    Emergencydf = Emergency[
+        ['Joy Evidence', 'Anger Evidence', 'Surprise Evidence', 'Fear Evidence', 'Contempt Evidence',
+         'Disgust Evidence', 'Sadness Evidence']]
+    EmergencyAU = Emergency[
+        ['AU1 Evidence', 'AU2 Evidence', 'AU4 Evidence', 'AU5 Evidence', 'AU6 Evidence', 'AU7 Evidence',
+         'AU9 Evidence', 'AU10 Evidence', 'AU12 Evidence', 'AU14 Evidence', 'AU15 Evidence', 'AU17 Evidence',
+         'AU18 Evidence', 'AU20 Evidence', 'AU23 Evidence', 'AU24 Evidence', 'AU25 Evidence', 'AU26 Evidence',
+         'AU28 Evidence', 'AU43 Evidence']]
 
-    nonEmergencydf = NonEmergency[['Joy Evidence', 'Anger Evidence', 'Surprise Evidence', 'Fear Evidence', 'Contempt Evidence',
-                                   'Disgust Evidence', 'Sadness Evidence']]
-    NonEmerencyAU = NonEmergency[['AU1 Evidence', 'AU2 Evidence','AU4 Evidence', 'AU5 Evidence', 'AU6 Evidence', 'AU7 Evidence',
-                                  'AU9 Evidence','AU10 Evidence','AU12 Evidence', 'AU14 Evidence', 'AU15 Evidence', 'AU17 Evidence',
-                                  'AU18 Evidence','AU20 Evidence','AU23 Evidence', 'AU24 Evidence', 'AU25 Evidence', 'AU26 Evidence',
-                                  'AU28 Evidence','AU43 Evidence']]
+    nonEmergencydf = NonEmergency[
+        ['Joy Evidence', 'Anger Evidence', 'Surprise Evidence', 'Fear Evidence', 'Contempt Evidence',
+         'Disgust Evidence', 'Sadness Evidence']]
+    NonEmerencyAU = NonEmergency[
+        ['AU1 Evidence', 'AU2 Evidence', 'AU4 Evidence', 'AU5 Evidence', 'AU6 Evidence', 'AU7 Evidence',
+         'AU9 Evidence', 'AU10 Evidence', 'AU12 Evidence', 'AU14 Evidence', 'AU15 Evidence', 'AU17 Evidence',
+         'AU18 Evidence', 'AU20 Evidence', 'AU23 Evidence', 'AU24 Evidence', 'AU25 Evidence', 'AU26 Evidence',
+         'AU28 Evidence', 'AU43 Evidence']]
 
     # Remove missing values
     Emergencydf.dropna()
@@ -45,11 +42,8 @@ for i in range(0, Cases):
     nonEmergencydf.dropna()
     NonEmerencyAU.dropna()
 
-# print('Emergency count : ', emergencyCount )
-# print('Non Emergency Count : ', nonEmergencyCount)
-
-# thresholdLimit = input('Enter number of thresholds to set : ')
-# ---- code for setting threshold dynamically
+    # thresholdLimit = input('Enter number of thresholds to set : ')
+    # ---- code for setting threshold dynamically
 
     # ----------------Emergency ---------------------------------------------------
     #  ------------------Physical Parameters Evaluation ----------------------
@@ -63,7 +57,7 @@ for i in range(0, Cases):
     Accept10 = Emergencydf[(Emergencydf > 1) & (Emergencydf < 2)].count()
     Accept100 = Emergencydf[(Emergencydf > 2) & (Emergencydf < 3)].count()
     Accept1000 = (Emergencydf[(Emergencydf > 3)].count())
-
+    # Statistics
     SignalNoiceRatio.append(Reject / Emergencydf.count())
     Uncertanity.append(Equiprobable / Emergencydf.count())
     Accept.append((Accept1 + Accept10 + Accept100 + Accept1000) / Emergencydf.count())
@@ -71,7 +65,7 @@ for i in range(0, Cases):
     # -----------Emergency Action Units Calculation --------------------------
     AUSignalNoiceRatio = []
     AUncertanity = []
-    AngerAU = []
+    AcceptAU = []
 
     AUReject = EmergencyAU[EmergencyAU < -0.0000001].count()
     AUEquiprobable = EmergencyAU[(EmergencyAU >= -0.0000001) & (EmergencyAU <= 0.0000001)].count()
@@ -83,10 +77,10 @@ for i in range(0, Cases):
              + AUAccept10[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']] \
              + AUAccept100[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']] \
              + AUAccept1000[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']]
-
+    # Statistics
     AUSignalNoiceRatio.append(AUReject / EmergencyAU.count())
     AUncertanity.append(AUEquiprobable / EmergencyAU.count())
-    AngerAU.append((AngerE / EmergencyAU[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']].count()))
+    AcceptAU.append((AngerE / EmergencyAU[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']].count()))
 
     # ------------------------Non Emergency ---------------------------------------
     #  ------------------Non Emergency Physical Parameters Evaluation --------
@@ -100,7 +94,7 @@ for i in range(0, Cases):
     nAccept10 = nonEmergencydf[(nonEmergencydf > 1) & (nonEmergencydf < 2)].count()
     nAccept100 = nonEmergencydf[(nonEmergencydf > 2) & (nonEmergencydf < 3)].count()
     nAccept1000 = nonEmergencydf[(nonEmergencydf > 3)].count()
-
+    # Statistics
     nSignalNoiceRatio.append(nReject / nonEmergencydf.count())
     nUncertanity.append(nEquiprobable / nonEmergencydf.count())
     nAccept.append((nAccept1 + nAccept10 + nAccept100 + nAccept1000) / nonEmergencydf.count())
@@ -108,7 +102,7 @@ for i in range(0, Cases):
     # -----------Non Emergency Action Units Calculation ----------------------
     AUnSignalNoiceRatio = []
     AUnUncertanity = []
-    AngernAU = []
+    nAcceptAU = []
 
     AUnReject = NonEmerencyAU[NonEmerencyAU < -0.0000001].count()
     AUnEquiprobable = NonEmerencyAU[(NonEmerencyAU >= -0.0000001) & (NonEmerencyAU <= 0.0000001)].count()
@@ -116,25 +110,35 @@ for i in range(0, Cases):
     AUnAccept10 = NonEmerencyAU[(NonEmerencyAU > 1) & (NonEmerencyAU < 2)].count()
     AUnAccept100 = NonEmerencyAU[(NonEmerencyAU > 2) & (NonEmerencyAU < 3)].count()
     AUnAccept1000 = (NonEmerencyAU[(NonEmerencyAU > 3)].count())
-
-    AUnSignalNoiceRatio.append(AUnReject / NonEmerencyAU.count())
-    AUnUncertanity.append(AUnEquiprobable / NonEmerencyAU.count())
+    # Statistics
+    AUnSignalNoiceRatio[i].append(AUnReject / NonEmerencyAU.count())
+    AUnUncertanity[i].append(AUnEquiprobable / NonEmerencyAU.count())
 
     AngerNE = AUnAccept1[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']] \
               + AUnAccept10[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']] \
               + AUnAccept100[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']] \
               + AUnAccept1000[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']]
 
-    AngernAU.append((AngerNE / NonEmerencyAU[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']].count()))
+    nAcceptAU[i].append((AngerNE / NonEmerencyAU[['AU4 Evidence', 'AU5 Evidence', 'AU7 Evidence', 'AU23 Evidence']].count()))
 
     # -- CHI Square Statistics -----------------------------------------------
     chiStatisticsAccept = []
     chiStatisticsEqui = []
-    chiStatisticsAnger = []
+    chiStatisticsAU = []
     RatioE_NE = []
 
-    RatioE_NE.append((Accept[0] / nAccept[0]))
-    chiStatisticsAccept.append(stats.chisquare(Accept, nAccept))
-    chiStatisticsEqui.append(stats.chisquare(SignalNoiceRatio, nSignalNoiceRatio))
-    chiStatisticsAnger.append(stats.chisquare(AngerAU, AngernAU))
+    RatioE_NE.append((Accept[i] / nAccept[i]))
+    chiStatisticsAccept[i].append(stats.chisquare(Accept[i], nAccept[i]))
+    chiStatisticsEqui[i].append(stats.chisquare(SignalNoiceRatio[i], nSignalNoiceRatio[i]))
+    chiStatisticsAU[i].append(stats.chisquare(AcceptAU[i], nAcceptAU[i]))
 
+    # -- Plotting --------------------------------------------------------------
+    #ggplot(aes(x='pageviews'), data=RatioE_NE) + geom_histogram(binwidth=50)
+
+
+    # E:\A TCD\X Thesis\Data\Sujay Emotient Analysis\Theresa May.csv
+    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Haley_RepublicanNationalConvention.csv'
+    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Christie_Non_Emergency.csv'
+    #  E:\A TCD\X Thesis\Data\Sujay Emotient Analysis\LeoVaradkar_Ireland.csv
+    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\HaleySouthCarolinaEmergency.csv'
+    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Christie_EmergencyNJ.csv'
