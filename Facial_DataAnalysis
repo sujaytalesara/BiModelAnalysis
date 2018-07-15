@@ -131,12 +131,22 @@ for i in range(1, Cases):
     chiStatisticsAU[i].append(stats.chisquare(AcceptAU[i], nAcceptAU[i]))
 
     # -- Plotting --------------------------------------------------------------
-    #ggplot(aes(x='pageviews'), data=RatioE_NE) + geom_histogram(binwidth=50)
+import plotly.plotly as ply
+import plotly.graph_objs as go
 
+trace1 = go.Bar(
+    x = ['Joy','Anger','Surprise','Fear','Contempt','Disgust','Sadness'],
+    y = Accept,
+    name = 'Emergency'
+)
 
-    # E:\A TCD\X Thesis\Data\Sujay Emotient Analysis\Theresa May.csv
-    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Haley_RepublicanNationalConvention.csv'
-    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Christie_Non_Emergency.csv'
-    #  E:\A TCD\X Thesis\Data\Sujay Emotient Analysis\LeoVaradkar_Ireland.csv
-    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\HaleySouthCarolinaEmergency.csv'
-    # 'E:\A TCD\X Thesis\Data\Khursid_Data\Emotient Data\Christie_EmergencyNJ.csv'
+trace2 = go.Bar(
+    x = ['Joy','Anger','Surprise','Fear','Contempt','Disgust','Sadness'],
+    y = nAccept,
+    name = 'Non Emergency'
+)
+
+data = [trace1,trace2]
+layout = go.Layout(barmode = 'group')
+fig = go.Figure(data=data,layout=layout)
+ply.plot(fig,fileName = 'grouped-bar')
