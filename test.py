@@ -49,10 +49,11 @@ Accept1 = Emergencydf[(Emergencydf > 0.0000001) & (Emergencydf < 1)].count()
 Accept10 = Emergencydf[(Emergencydf > 1) & (Emergencydf < 2)].count()
 Accept100 = Emergencydf[(Emergencydf > 2) & (Emergencydf < 3)].count()
 Accept1000 = (Emergencydf[(Emergencydf > 3)].count())
-    # Statistics
+
+# Statistics
 SignalNoiceRatio.append(Reject / Emergencydf.count())
 Uncertanity.append(Equiprobable / Emergencydf.count())
-Accept.append((Accept1 + Accept10 + Accept100 + Accept1000) / Emergencydf.count())
+Accept = ((Accept1 + Accept10 + Accept100 + Accept1000) / Emergencydf.count())
 
 # -----------Emergency Action Units Calculation --------------------------
 AUSignalNoiceRatio = []
@@ -89,12 +90,14 @@ nAccept1000 = nonEmergencydf[(nonEmergencydf > 3)].count()
 # Statistics
 nSignalNoiceRatio.append(nReject / nonEmergencydf.count())
 nUncertanity.append(nEquiprobable / nonEmergencydf.count())
-nAccept.append((nAccept1 + nAccept10 + nAccept100 + nAccept1000) / nonEmergencydf.count())
-
+nAccept = (nAccept1 + nAccept10 + nAccept100 + nAccept1000) / nonEmergencydf.count()
+#cc = (nAccept1 + nAccept10 + nAccept100 + nAccept1000) / nonEmergencydf.count()
 # -----------Non Emergency Action Units Calculation ----------------------
 AUnSignalNoiceRatio = []
 AUnUncertanity = []
 nAcceptAU = []
+
+
 
 AUnReject = NonEmerencyAU[NonEmerencyAU < -0.0000001].count()
 AUnEquiprobable = NonEmerencyAU[(NonEmerencyAU >= -0.0000001) & (NonEmerencyAU <= 0.0000001)].count()
@@ -136,3 +139,60 @@ print('T test values for Equiprobable ',chiStatisticsEqui)
 print('--------------------------------------------------------------------------------------')
 print('T test values for Action Units ',chiStatisticsAU)
 print('---------------------------------------------------------------------------------------')
+
+'''
+---------------- comment Matplotlib
+import matplotlib.pyplot as plt
+
+a = np.transpose(Accept)
+b = np.transpose(nAccept)
+
+X = np.arange(7)
+plt.bar(X + 0.00, a, color = 'b', width = 0.25)
+plt.bar(X + 0.25, b, color = 'g', width = 0.25)
+plt.show()
+
+ind = np.arange(7)
+width = 0.35
+plt.bar(ind, a, width, label='Emergency')
+plt.bar(ind + width, b, width,label='Non Emergency')
+
+plt.ylabel('Scores')
+plt.title('Scores by group and gender')
+
+plt.xticks(ind + width / 2, ('G1', 'G2', 'G3', 'G4', 'G5','G6', 'G7'))
+plt.legend(loc='best')
+plt.show()
+
+'''
+
+import plotly.plotly as ply
+import plotly.graph_objs as go
+
+trace1 = go.Bar(
+    x = ['Joy','Anger','Surprise','Fear','Contempt','Disgust','Sadness'],
+    y = Accept,
+    name = 'Emergency'
+)
+
+trace2 = go.Bar(
+    x = ['Joy','Anger','Surprise','Fear','Contempt','Disgust','Sadness'],
+    y = nAccept,
+    name = 'Non Emergency'
+)
+
+data = [trace1,trace2]
+layout = go.Layout(barmode = 'group')
+fig = go.Figure(data=data,layout=layout)
+ply.plot(fig,fileName = 'grouped-bar')
+
+'''
+#---- Threshold Values setting ------
+RejectValue = input('Enter Reject Threshold Values'); # -0.0000001
+EquiprobableValue1 = input('Enter Equiprobable Start Threshold Values'); # -0.0000001,
+EquiprobableValue2 = input('Enter Equiprobable End Threshold Values'); # 0.0000001
+Accept01Value = input('Enter Accept all End Threshold Values'); # 0.0000001
+Accept10Value = input('Enter Accept all End Threshold Values'); # 1
+Accept100Value = input('Enter Accept all End Threshold Values'); # 2
+Accept1000Value = input('Enter Accept all End Threshold Values'); # 3
+'''
